@@ -1,16 +1,13 @@
 import fastify from "fastify";
-import { db } from "./db/index.js";
-import { todos } from "./db/schema.js";
+import dbPlugin from "./plugins/db.js";
+import { todosRoutes } from "./routes/todos.js";
 
-const server = fastify();
-
-server.get("/ping", async () => {
-  return "pong";
+const server = fastify({
+  logger: true,
 });
 
-server.get("/todos", async () => {
-  return await db.select().from(todos);
-});
+await server.register(dbPlugin);
+await server.register(todosRoutes);
 
 server.listen({ port: 8080 }, (err, address) => {
   if (err) {
