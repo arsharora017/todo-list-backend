@@ -1,9 +1,15 @@
 import fastify from "fastify";
+import { db } from "./db/index.js";
+import { todos } from "./db/schema.js";
 
 const server = fastify();
 
 server.get("/ping", async () => {
-  return "pong\n";
+  return "pong";
+});
+
+server.get("/todos", async () => {
+  return await db.select().from(todos);
 });
 
 server.listen({ port: 8080 }, (err, address) => {
