@@ -1,9 +1,16 @@
 import fastify from "fastify";
+import cors from "@fastify/cors";
 import dbPlugin from "./plugins/db.js";
 import { todosRoutes } from "./routes/todos.js";
 
 const server = fastify({
   logger: true,
+});
+
+// Enable CORS
+await server.register(cors, {
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
 });
 
 await server.register(dbPlugin);

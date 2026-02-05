@@ -1,11 +1,11 @@
 import type { FastifyInstance } from "fastify";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { todos } from "../db/schema.js";
 
 export async function todosRoutes(fastify: FastifyInstance) {
   // GET /todos
   fastify.get("/todos", async () => {
-    return fastify.db.select().from(todos);
+    return fastify.db.select().from(todos).orderBy(desc(todos.createdAt));
   });
 
   // POST /todos
